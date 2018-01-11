@@ -7,8 +7,8 @@
     function dumpr($data, $label='', $return = false, $showFileAndLine = true)
     {
 
-        $debug           = debug_backtrace();
-        $callingFile     = $debug[0]['file'];
+        $debug = debug_backtrace();
+        $callingFile = $debug[0]['file'];
         $callingFileLine = $debug[0]['line'];
 
         ob_start();
@@ -32,7 +32,9 @@
         //$c = preg_replace("/(int|float)\(([0-9\.]+)\)/i", "$1(".strlen('$2').") <span class=\"number\">$2</span>", $c);
         //$c = preg_replace("/(int|float)\(([0-9\.]+)\)/i", "$1() <span class=\"number\">$2</span>", $c);
         // DAF
-        $c = preg_replace_callback("/(int|float)\(([0-9\.]+)\)/i", function($m) { return "$m[1](".strlen($m[2]).") <span class=\"number\">$m[2]</span>"; }, $c);
+        $c = preg_replace_callback("/(int|float)\(([0-9\.]+)\)/i", function ($m) {
+            return "$m[1](" . strlen($m[2]) . ") <span class=\"number\">$m[2]</span>";
+        }, $c);
 
         // Syntax Highlighting of Strings. This seems cryptic, but it will also allow non-terminated strings to get parsed.
         $c = preg_replace("/(\[[\w ]+\] = string\([0-9]+\) )\"(.*?)/sim", "$1<span class=\"string\">\"", $c);
@@ -42,14 +44,14 @@
 
         $regex = array(
             // Numberrs
-            'numbers' => array('/(^|] = )(array|float|int|string|resource|object\(.*\)|\&amp;object\(.*\))\(([0-9\.]+)\)/i', '$1$2(<span class="number">$3</span>)'),
+            'numbers'  => array('/(^|] = )(array|float|int|string|resource|object\(.*\)|\&amp;object\(.*\))\(([0-9\.]+)\)/i', '$1$2(<span class="number">$3</span>)'),
             // Keywords
-            'null' => array('/(^|] = )(null)/i', '$1<span class="keyword">$2</span>'),
-            'bool' => array('/(bool)\((true|false)\)/i', '$1(<span class="keyword">$2</span>)'),
+            'null'     => array('/(^|] = )(null)/i', '$1<span class="keyword">$2</span>'),
+            'bool'     => array('/(bool)\((true|false)\)/i', '$1(<span class="keyword">$2</span>)'),
             // Types
-            'types' => array('/(of type )\((.*)\)/i', '$1(<span class="type">$2</span>)'),
+            'types'    => array('/(of type )\((.*)\)/i', '$1(<span class="type">$2</span>)'),
             // Objects
-            'object' => array('/(object|\&amp;object)\(([\w]+)\)/i', '$1(<span class="object">$2</span>)'),
+            'object'   => array('/(object|\&amp;object)\(([\w]+)\)/i', '$1(<span class="object">$2</span>)'),
             // Function
             'function' => array('/(^|] = )(array|string|int|float|bool|resource|object|\&amp;object)\(/i', '$1<span class="function">$2</span>('),
         );
@@ -104,25 +106,25 @@
         $c = trim($c);
         $c = preg_replace("/\n<\/span>/", "</span>\n", $c);
 
-        if ($label == ''){
+        if ($label == '') {
             $line1 = '';
         } else {
             $line1 = "<strong>$label</strong> \n";
         }
 
-        if($showFileAndLine){
+        if ($showFileAndLine) {
             $origin = "$callingFile : $callingFileLine \n";
         } else {
             $origin = "";
         }
 
-        $out = "\n<!-- Dumpr Begin -->\n".
-            "<style type=\"text/css\">".$style."</style>\n".
+        $out = "\n<!-- Dumpr Begin -->\n" .
+            "<style type=\"text/css\">" . $style . "</style>\n" .
             "<div class=\"dumpr\">
-        <div><pre>$line1$origin$c\n</pre></div></div><div style=\"clear:both;\">&nbsp;</div>".
+        <div><pre>$line1$origin$c\n</pre></div></div><div style=\"clear:both;\">&nbsp;</div>" .
             "\n<!-- Dumpr End -->\n";
 
-        if($return) {
+        if ($return) {
             return $out;
         } else {
             echo $out;
