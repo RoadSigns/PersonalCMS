@@ -2,7 +2,7 @@
     // Project Name
     define('PROJECTNAME', 'PersonalCMS');
     // Base Path
-    define('BASEPATH', '/PersonalCMS');
+    define('BASEPATH', '/');
     // Database
     define('DBHOST', '');
     define('DBUSER', '');
