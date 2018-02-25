@@ -7,3 +7,11 @@
     // Debugging Tools
     require ('Bootstrap/debug.php');
 
+    use PersonalCMS\Infrastructure\Router\RouterEngine;
+    use PersonalCMS\Infrastructure\Router\Router;
+
+    $routerEngine = new RouterEngine();
+    $router = new Router($routerEngine);
+
+    $router->generateRoutes();
+    $router->getController();
